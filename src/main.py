@@ -11,7 +11,7 @@ COLOR_CHANNELS = 3 # RGB
 IMG_PIXELS = IMG_SIZE * IMG_SIZE * COLOR_CHANNELS # 画像のサイズ*RGB
 
 # 画像のあるディレクトリ
-train_img_dirs = ['img/train/true', 'img/train/false']
+train_img_dirs = ['../img/true_img', '../img/false_img']
 
 # 学習画像データ
 train_image = []
@@ -21,21 +21,19 @@ train_label = []
 for i, d in enumerate(train_img_dirs):
     # ./data/以下の各ディレクトリ内のファイル名取得
     files = os.listdir('./'+d)
-    try:
-        for f in files:
-            # 画像読み込み
-            img = cv2.imread('./' + d + '/' + f)
-            # 1辺がIMG_SIZEの正方形にリサイズ
-            img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
-            # 1列にして
-            img = img.flatten().astype(np.float32)/255.0
-            train_image.append(img)
-            # one_hot_vectorを作りラベルとして追加
-            tmp = np.zeros(NUM_CLASSES)
-            tmp[i] = 1
-            train_label.append(tmp)
-    except:
-        pass
+
+    for f in files:
+        # 画像読み込み
+        img = cv2.imread('./' + d + '/' + f)
+        # 1辺がIMG_SIZEの正方形にリサイズ
+        img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
+        # 1列にして
+        img = img.flatten().astype(np.float32)/255.0
+        train_image.append(img)
+        # one_hot_vectorを作りラベルとして追加
+        tmp = np.zeros(NUM_CLASSES)
+        tmp[i] = 1
+        train_label.append(tmp)
 
 # numpy配列に変換
 train_image = np.asarray(train_image)
@@ -104,8 +102,8 @@ correct_prediction = tf.equal(tf.argmax(y_conv,1), tf.argmax(y_,1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 sess.run(tf.initialize_all_variables())
 
-STEPS = 100 # 学習ステップ数
-BATCH_SIZE = 50 # バッチサイズ
+STEPS = 200 # 学習ステップ数
+BATCH_SIZE = 20 # バッチサイズ
 train_accuracies = []
 
 for i in range(STEPS):
@@ -129,7 +127,7 @@ for i in range(STEPS):
 
 # ----------------------------- #
 # 検証画像のあるディレクトリ
-test_img_dirs = ['img/test']
+test_img_dirs = ['../img/test']
 
 # 検証画像データ
 test_image = []
