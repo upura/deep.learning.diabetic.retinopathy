@@ -7,3 +7,6 @@ Use CNN shown in the MNIST tutorial of tensowflow, and change train & test image
 
 # Summary of Paper (in Japanese)
 https://github.com/upura/deep.learning.diabetic.retinopathy/blob/master/summary.md
+
+## Slides
+http://upura.hatenablog.com/entry/2018/02/10/144204
