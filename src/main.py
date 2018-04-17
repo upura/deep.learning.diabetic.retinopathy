@@ -5,37 +5,37 @@ import os
 import numpy as np
 import cv2
 
-NUM_CLASSES = 2 # 分類するクラス数
-IMG_SIZE = 28 # 画像の1辺の長さ
+NUM_CLASSES = 2 # The number of classes
+IMG_SIZE = 28 # The length of one side of images
 COLOR_CHANNELS = 3 # RGB
-IMG_PIXELS = IMG_SIZE * IMG_SIZE * COLOR_CHANNELS # 画像のサイズ*RGB
+IMG_PIXELS = IMG_SIZE * IMG_SIZE * COLOR_CHANNELS
 
-# 画像のあるディレクトリ
+# Directory path for training data
 train_img_dirs = ['../img/true_img', '../img/false_img']
 
-# 学習画像データ
+# List for training data
 train_image = []
-# 学習データのラベル
+# List for labels of training data
 train_label = []
 
 for i, d in enumerate(train_img_dirs):
-    # ./data/以下の各ディレクトリ内のファイル名取得
+    # Get file names
     files = os.listdir('./'+d)
 
     for f in files:
-        # 画像読み込み
+        # Input images
         img = cv2.imread('./' + d + '/' + f)
-        # 1辺がIMG_SIZEの正方形にリサイズ
+        # Resize images
         img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
-        # 1列にして
+        # Convert data into one row
         img = img.flatten().astype(np.float32)/255.0
         train_image.append(img)
-        # one_hot_vectorを作りラベルとして追加
+        # Create one_hot_vectors, and add them as labels
         tmp = np.zeros(NUM_CLASSES)
         tmp[i] = 1
         train_label.append(tmp)
 
-# numpy配列に変換
+# Convert to numpy
 train_image = np.asarray(train_image)
 train_label = np.asarray(train_label)
 
@@ -102,8 +102,8 @@ correct_prediction = tf.equal(tf.argmax(y_conv,1), tf.argmax(y_,1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 sess.run(tf.initialize_all_variables())
 
-STEPS = 200 # 学習ステップ数
-BATCH_SIZE = 20 # バッチサイズ
+STEPS = 200 # The number of learning steps
+BATCH_SIZE = 20 # Batch size
 train_accuracies = []
 
 for i in range(STEPS):
@@ -119,33 +119,33 @@ for i in range(STEPS):
             train_label_batch.append(train_label[random_seq[batch + k]])
         train_step.run(feed_dict={x: train_image_batch, y_: train_label_batch, keep_prob: 0.5})
 
-    # 毎ステップ、学習データに対する正答率を表示
+    # Show correct answer rate for training data at every step
     train_accuracy = accuracy.eval(feed_dict={
             x:train_image, y_: train_label, keep_prob: 1.0})
     print("step %d, training accuracy %g"%(i, train_accuracy))
     train_accuracies.append(train_accuracy)
 
 # ----------------------------- #
-# 検証画像のあるディレクトリ
+# Directory path for testing data
 test_img_dirs = ['../img/test']
 
-# 検証画像データ
+# List for testing data
 test_image = []
 
 for i, d in enumerate(test_img_dirs):
-    # ./data/以下の各ディレクトリ内のファイル名取得
+    # Get file names
     files = os.listdir(d)
     for f in files:
-        # 画像読み込み
+        # Input images
         img = cv2.imread(d + '/' + f)
-        # 1辺がIMG_SIZEの正方形にリサイズ
+        # Resize images
         img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
-        # 1列にして
+        # Convert data into one row
         img = img.flatten().astype(np.float32)/255.0
         test_image.append(img)
         print(f)
 
-# numpy配列に変換
+# Convert to numpy
 test_image = np.asarray(test_image)
 
 answer = tf.argmax(y_conv,1)
