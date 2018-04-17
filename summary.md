@@ -28,16 +28,16 @@ deep convolutional neural network
 # 議論はある？
 - 同システムの利点
   1. consistency of interpretation
-  2. high sensitivity and specificity
-  3. instantaneous reporting of results
-  4. sensitivity and specificityを目的に応じて調整できる
+  1. high sensitivity and specificity
+  1. instantaneous reporting of results
+  1. sensitivity and specificityを目的に応じて調整できる
 - 今後の展望
   1. より豊富な訓練データ
-  2. より多角的なシステム評価
+  1. より多角的なシステム評価
 - システムの限界
-  1. 医師の判断に基づきラベル付けしているため医師が見つけられないものは見つけられない
-  2. neural newworkのブラックボックス性
-    - "Hence, this algorithm is not a replacement for a comprehensive eye examination"
+  1. 医師の判断に基づきラベル付けしているため医師が見つけられないものは見つけられない
+  1. neural newworkのブラックボックス性
+    - "Hence, this algorithm is not a replacement for a comprehensive eye examination"
 
 # 次に読むべき論文は？
 NULL
